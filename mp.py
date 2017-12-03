@@ -8,7 +8,7 @@ itchatmp.update_config(itchatmp.WechatConfig(
     appId = 'wx02fb9d00f976e7f0',
     appSecret = 'wx02fb9d00f976e7f0'))
 
-# 接用户消息
+# 接收用户消息
 @itchatmp.msg_register(itchatmp.content.TEXT)
 def text_reply(msg):
     toUserName = msg['FromUserName']
@@ -21,15 +21,19 @@ def text_reply(msg):
         if line[:-1] == toUserName:
             isContain = 1;
     if isContain == 0:
-        return '该系统并未对您开放，请联系PJ进行配置室内环境智能监测系统'
+        return '该系统并未对您开放，请联系PJ进行配置'
     else:
-        if content == '加灯':
-            test.addNewUnit()
-            return '操作成功!'
+        if content == '添加':
+            # test.addNewUnit('tempUnit', 1, 2)
+             return '操作成功!'
         elif content == '开灯':
-            return test.updateStatusWithHardware('hardware', 1, 1, 1)
+             return test.updateStatusWithHardware('hardware', 1, 1, 1)
         elif content == '关灯':
             return test.updateStatusWithHardware('hardware', 1, 1, 0)
+        elif content == '温度':
+            unit = test.updateStatusWithHardware('hardware', 0, 'tempUnit', 1)
+            returnString = '当前温度为：' + str(unit.num) + '°'
+            return returnString
 
 # 新用户关注公众号时
 @itchatmp.msg_register(itchatmp.content.EVENT)

@@ -21,14 +21,14 @@ class Hardware(Base):
 # 添加电子原件方法
 # 原件name及针脚num需要配置
 # 原件状态默认关闭
-def addNewUnit():
+def addNewUnit(hardwareName, status, num):
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
     unit = Hardware(
-        name = 'redLED',
-        status = 0,
-        num = 1)
+        name = hardwareName,
+        status = status,
+        num = num)
     session.add(unit)
     session.commit()
 
@@ -36,33 +36,34 @@ def addNewUnit():
 def updateStatusWithHardware(tableName, operatorStatus, hardwareNum, status):
     if tableName == 'hardware':
         if operatorStatus == 1:
-            return writeHardware(hardwareNum, status)
+            return writeHardware(hardwareNum, status, 0)
         else:
-            readHardware(hardwareNum)
+            return readHardware(hardwareNum, 1)
         
 # 执行write操作
-def writeHardware(hardwareNum, status):
-    if readHardware('redLED') == 1 and status == 1:
-        return '已开启'
-    if readHardware('redLED') == 0 and status == 0:
-        return '已关闭'
+def writeHardware(hardwareNum, status, num):
+    unit = readHardware('redLED', 0);
+    if unit.status == 1 and status == 1:
+        return 'redLED 已开启'
+    if unit.status == 0 and status == 0:
+        return 'redLED 已关闭'
     
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind = engine)
     session = Session()
     unit = session.query(Hardware).get(hardwareNum)
-    unit.status = status;
+    unit.status = status
+    if num != 0:
+        unit.num = num;
     session.add(unit)
     session.commit()
     return '操作成功'
 
-
 # 执行read操作
-def readHardware(harawareNum):
+def readHardware(harawareNum, componentType):
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind = engine)
     session = Session()
     unit = session.query(Hardware).filter_by(name=harawareNum).first()
-    return unit.status
-
+    return unit
 

@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Resource, Api
-from flask import jsonify  
+from flask import jsonify, request  
 from flask import abort
 from flask import make_response
 
@@ -32,6 +32,16 @@ def index():
 @app.route('/dachuang/api/v1/tasks', methods=['GET'])
 def get_tasks():
     return jsonify({'tasks': tasks})
+
+@app.route('/dachuang/api/v1/hardware')
+def get_hardware():
+    hardwarename = request.args.get('hardwarename')
+    unit = test.readHardware(hardwarename, 0)
+    response = {'id' : unit.id,
+                'name' : unit.name,
+                'status' : unit.status,
+                'num' : unit.num}
+    return jsonify(response)
 
 @app.route('/dachuang/api/v1/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):

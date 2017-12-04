@@ -60,10 +60,10 @@ def writeHardware(hardwareNum, status, num):
     return '操作成功'
 
 # 执行read操作
-def readHardware(harawareNum, componentType):
+def readHardware(harawareName, componentType):
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind = engine)
     session = Session()
-    unit = session.query(Hardware).filter_by(name=harawareNum).first()
+    unit = session.query(Hardware).filter_by(name=harawareName).first()
     return unit
 

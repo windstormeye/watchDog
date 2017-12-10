@@ -35,13 +35,21 @@ def get_tasks():
 
 @app.route('/dachuang/api/v1/hardware')
 def get_hardware():
-    hardwarename = request.args.get('hardwarename')
-    unit = test.readHardware(hardwarename, 0)
+    hardwarename = request.args.get('hardwarename')    
+    unit = test.readHardware(hardwarename)
     response = {'id' : unit.id,
                 'name' : unit.name,
                 'status' : unit.status,
                 'num' : unit.num}
     return jsonify(response)
+
+@app.route('/dachuang/api/v1/updateHardware', methods=['GET'])
+def get_hardwareNum():
+    hardwarename = request.args.get('hardwarename')
+    status = request.args.get('status')
+    num = request.args.get('num')
+    test.writeHardware(hardwarename, status, num)
+    unit = test.readHardware()
 
 @app.route('/dachuang/api/v1/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):

@@ -27,9 +27,9 @@ def text_reply(msg):
             # test.addNewUnit('tempUnit', 1, 2)
              return '操作成功!'
         elif content == '开灯':
-             return test.updateStatusWithHardware('hardware', 1, 1, 1)
+             return test.updateStatusWithHardware('hardware', 1, 'redLED', 1)
         elif content == '关灯':
-            return test.updateStatusWithHardware('hardware', 1, 1, 0)
+            return test.updateStatusWithHardware('hardware', 1, 'redLED', 0)
         elif content == '温度':
             unit = test.updateStatusWithHardware('hardware', 0, 'tempUnit', 1)
             returnString = '当前温度为：' + str(unit.num) + '°'

@@ -9,22 +9,6 @@ import test
 app = Flask(__name__)
 api = Api(app)
 
-
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
-]
-
 @app.route('/')
 def index():
     return 'Get out!🙂'
@@ -42,6 +26,20 @@ def get_hardware():
                 'status' : unit.status,
                 'num' : unit.num}
     return jsonify(response)
+
+@app.route('/dachuang/api/v1/allHardware')
+def get_allHardware():
+    LED = test.readHardware('redLED')
+    UNIT= test.readHardware('tempUnit')
+    LEDres = { 'id' : LED.id,
+               'name' : LED.name,
+               'status' : LED.status,
+               'num' : LED.num }
+    UNITres = { 'id' : UNIT.id,
+                'name' : UNIT.name,
+                'status' : UNIT.status,
+                'num' : UNIT.num }
+    return jsonify([LEDres, UNITres])
 
 @app.route('/dachuang/api/v1/updateHardware', methods=['GET'])
 def get_hardwareNum():

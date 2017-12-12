@@ -34,6 +34,10 @@ def text_reply(msg):
             unit = test.updateStatusWithHardware('hardware', 0, 'tempUnit', 1)
             returnString = '当前温度为：' + str(unit.num) + '°'
             return returnString
+        elif content == '开风扇':
+            return test.updateStatusWithHardware('hardware', 1, 'tempUnit', 1)
+        elif content == '关风扇':
+            return test.updateStatusWithHardware('hardware', 1, 'tempUnit', 0)
 
 # 新用户关注公众号时
 @itchatmp.msg_register(itchatmp.content.EVENT)

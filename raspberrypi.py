@@ -5,7 +5,7 @@ import json
 
 hostname = 'http://139.199.168.197:5000/dachuang/api/v1/allHardware'
 
-ser = serial.Serial('/dev/ttyACM0', 9600, timeout = 3)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout = 4)
 
 while 1:
     r = urllib2.Request(hostname)
@@ -22,7 +22,9 @@ while 1:
 	send += 'b'
     else:
    	send += 'B'
-    print send
     ser.write(send)
     response = ser.readall()
-    print response
+    if '' != response: 
+        response = response[0:2]
+        ret = urllib2.Request("http://139.199.168.197:5000/dachuang/api/v1/updateHardware?hardwarename=tempUnit&status=3" + '&num=' + response)
+        ret = urllib2.urlopen(ret)

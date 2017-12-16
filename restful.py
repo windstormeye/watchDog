@@ -42,12 +42,16 @@ def get_allHardware():
     return jsonify([LEDres, UNITres])
 
 @app.route('/dachuang/api/v1/updateHardware', methods=['GET'])
-def get_hardwareNum():
+def get_updateHardware():
     hardwarename = request.args.get('hardwarename')
     status = request.args.get('status')
     num = request.args.get('num')
-    test.writeHardware(hardwarename, status, num)
-    unit = test.readHardware()
+    if status == '3':
+        unit = test.readHardware(hardwarename)
+        test.writeHardware(hardwarename, unit.status, num)
+    else:
+        test.writeHardware(hardwarename, unit.status, num)
+    return jsonify({'code' : '1'})
 
 @app.route('/dachuang/api/v1/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
